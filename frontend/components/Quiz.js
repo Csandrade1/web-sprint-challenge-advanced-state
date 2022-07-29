@@ -1,34 +1,79 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import * as actionCreators from "../state/action-creators";
 
-export default function Quiz(props) {
+function Quiz(props) {
+  const onClickSelect = (e) => {
+    props.selectAnswer(Number(e.target.id));
+  };
+
+  useEffect(() => {
+    if (!props.quiz) {
+      props.fetchQuiz();
+    }
+  }, [props.quiz]);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const body = {
+      quiz_id: props.quiz.quiz_id,
+      answer_id:
+        props.selectedAnswer === 1
+          ? props.quiz.answers[0].answer_id
+          : props.quiz.answers[1].answer_id,
+    };
+    console.log(body);
+
+    props.postAnswer(body);
+  };
+
   return (
     <div id="wrapper">
       {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        true ? (
+        props.quiz ? (
           <>
-            <h2>What is a closure?</h2>
+            <h2>{props.quiz.question}</h2>
 
             <div id="quizAnswers">
-              <div className="answer selected">
-                A function
-                <button>
-                  SELECTED
+              <div
+                onClick={onClickSelect}
+                id={1}
+                className={
+                  props.selectedAnswer === 1 ? "answer selected" : "answer"
+                }
+              >
+                {props.quiz.answers[0].text}
+                <button onClick={onClickSelect} id={1}>
+                  {props.selectedAnswer === 1 ? "SELECTED" : "Select"}
                 </button>
               </div>
 
-              <div className="answer">
-                An elephant
-                <button>
-                  Select
+              <div
+                onClick={onClickSelect}
+                id={2}
+                className={
+                  props.selectedAnswer === 2 ? "answer selected" : "answer"
+                }
+              >
+                {props.quiz.answers[1].text}
+                <button onClick={onClickSelect} id={2}>
+                  {props.selectedAnswer === 2 ? "SELECTED" : "Select"}
                 </button>
               </div>
             </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
+            <button onClick={onSubmit} id="submitAnswerBtn">
+              Submit answer
+            </button>
           </>
-        ) : 'Loading next quiz...'
+        ) : (
+          "Loading next quiz..."
+        )
       }
     </div>
-  )
+  );
 }
+
+export default connect((st) => st, actionCreators)(Quiz);
