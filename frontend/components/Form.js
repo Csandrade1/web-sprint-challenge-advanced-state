@@ -3,19 +3,13 @@ import { connect } from "react-redux";
 import * as actionCreators from "../state/action-creators";
 
 export function Form(props) {
-  const state = {
-    newFalseAnswer: "",
-    newQuestion: "",
-    newTrueAnswer: "",
-  };
+  console.log(props, "form");
 
-  console.log(props);
+  const onChange = (evt) => {};
 
-  const onChange = (evt) => {
+  const onSubmit = (evt) => {
     evt.preventDefault();
   };
-
-  const onSubmit = (evt) => {};
 
   return (
     <form id="form" onSubmit={onSubmit}>

@@ -2,8 +2,11 @@
 import { combineReducers } from "redux";
 import { moveClockwise, moveCounterClockwise } from "./action-creators";
 import {
+  INPUT_CHANGE,
   MOVE_CLOCKWISE,
   MOVE_COUNTERCLOCKWISE,
+  RESET_FORM,
+  SET_INFO_MESSAGE,
   SET_QUIZ_INTO_STATE,
   SET_SELECTED_ANSWER,
 } from "./action-types";
@@ -55,7 +58,13 @@ function selectedAnswer(state = initialSelectedAnswerState, action) {
 
 const initialMessageState = "";
 function infoMessage(state = initialMessageState, action) {
-  return state;
+  switch (action.type) {
+    case SET_INFO_MESSAGE:
+      return action.payload;
+
+    default:
+      return state;
+  }
 }
 
 const initialFormState = {
@@ -64,7 +73,14 @@ const initialFormState = {
   newFalseAnswer: "",
 };
 function form(state = initialFormState, action) {
-  return state;
+  switch (action.type) {
+    case INPUT_CHANGE:
+      return action.payload;
+    case RESET_FORM:
+      return state;
+    default:
+      return state;
+  }
 }
 
 export default combineReducers({

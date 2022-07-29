@@ -28,6 +28,8 @@ function Quiz(props) {
     props.postAnswer(body);
   };
 
+  const disabling = true;
+
   return (
     <div id="wrapper">
       {
@@ -64,7 +66,15 @@ function Quiz(props) {
               </div>
             </div>
 
-            <button onClick={onSubmit} id="submitAnswerBtn">
+            <button
+              onClick={onSubmit}
+              disabled={
+                props.selectedAnswer === 2 || props.selectedAnswer === 1
+                  ? !disabling
+                  : disabling
+              }
+              id="submitAnswerBtn"
+            >
               Submit answer
             </button>
           </>

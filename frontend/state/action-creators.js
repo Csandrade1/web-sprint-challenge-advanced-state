@@ -41,15 +41,29 @@ export function postAnswer(body) {
     axios.post("http://localhost:9000/api/quiz/answer", body).then((res) => {
       dispatch({ type: actionType.SET_QUIZ_INTO_STATE, payload: "" });
       dispatch({ type: actionType.SET_SELECTED_ANSWER, payload: 0 });
+      dispatch({
+        type: actionType.SET_INFO_MESSAGE,
+        payload: res.data.message,
+      });
       console.log(res);
     });
   };
 }
-export function postQuiz() {
+export function postQuiz(initialFormState) {
   return function (dispatch) {
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
+    axios
+      .post("http://localhost:9000/api/quiz/new", initialFormState)
+      .then((res) => {
+        console.log(res, "res");
+        dispatch({
+          type: actionType.SET_INFO_MESSAGE,
+          payload: res.data.message,
+        });
+        dispatch({ type: actionType.RESET_FORM, payload: initialFormState });
+      });
   };
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
