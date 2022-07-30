@@ -23,7 +23,6 @@ function Quiz(props) {
           ? props.quiz.answers[0].answer_id
           : props.quiz.answers[1].answer_id,
     };
-    console.log(body);
 
     props.postAnswer(body);
   };
